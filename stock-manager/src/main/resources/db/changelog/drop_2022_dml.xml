@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+	<changeSet id="DROP-17-JAN-2022-INSERT_PREDEFINED_STOCKS"
+			   author="STOCK_MANAGER" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="STOCK" />
+		</preConditions>
+		<insert tableName="STOCK">
+		   <!--  <column name="STOCK_ID"  valueSequenceNext="STOCK_SEQ" /> -->
+		    <column name="STOCK_ID"  value="104" />
+			<column name="NAME" value="PAYCONIQ"></column>
+			<column name="DESCRIPTION" value="PAY CONIQ is a company that deals with Payment"></column>
+			<column name="COMPANY_URL" value="https://www.pay.nl/"></column>
+			<column name="CURRENT_PRICE" value="123"></column>
+		</insert>
+		<insert tableName="STOCK">
+		    <column name="STOCK_ID"  value="105" />
+			<column name="NAME" value="SAP"></column>
+			<column name="DESCRIPTION" value="SAP is an ERP Company"></column>
+			<column name="COMPANY_URL" value="https://www.sap.com/"></column>
+			<column name="CURRENT_PRICE" value="123"></column>
+		</insert>
+		<insert tableName="STOCK">
+		   <column name="STOCK_ID"  value="106" />
+			<column name="NAME" value="GOOGLE"></column>
+			<column name="DESCRIPTION" value="Google is a great company"></column>
+			<column name="COMPANY_URL" value="https://www.google.com/"></column>
+			<column name="CURRENT_PRICE" value="123"></column>
+		</insert>
+	</changeSet>
+	
+	<changeSet id="DROP-17-JAN-2022-INSERT_PREDEFINED_STOCK_PRICES_HISTORY"
+			   author="STOCK_MANAGER" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="stock_price_history" />
+		</preConditions>
+		<insert tableName="stock_price_history">
+		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
+		    <column name="STOCK_ID"  value = "104"/>
+			<column name="CURRENT_PRICE" value="123"></column>
+			<column name="OPERATION" value="C"></column>
+			<column name="LAST_UPDATED_TS" value="2022-04-10 02:19:04.956975+00"/>
+		</insert>
+		<insert tableName="stock_price_history">
+		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
+		    <column name="STOCK_ID"  value = "104"/>
+			<column name="CURRENT_PRICE" value="124"></column>
+			<column name="OPERATION" value="U"></column>
+			<column name="LAST_UPDATED_TS" value="2022-04-11 02:19:04.956975+00"/>
+		</insert>
+		<insert tableName="stock_price_history">
+		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
+		    <column name="STOCK_ID"  value = "104"/>
+			<column name="CURRENT_PRICE" value="125"></column>
+			<column name="OPERATION" value="U"></column>
+			<column name="LAST_UPDATED_TS" value="2022-04-12 02:19:04.956975+00"/>
+		</insert>
+		<insert tableName="stock_price_history">
+		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
+		    <column name="STOCK_ID"  value = "104"/>
+			<column name="CURRENT_PRICE" value="128"></column>
+			<column name="OPERATION" value="C"></column>
+			<column name="LAST_UPDATED_TS" value="2022-04-13 02:19:04.956975+00"/>
+		</insert>
+		<insert tableName="stock_price_history">
+		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
+		    <column name="STOCK_ID"  value = "104"/>
+			<column name="CURRENT_PRICE" value="129"></column>
+			<column name="OPERATION" value="U"></column>
+			<column name="LAST_UPDATED_TS" value="2022-04-14 02:19:04.956975+00"/>
+		</insert>
+		<insert tableName="stock_price_history">
+		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
+		    <column name="STOCK_ID"  value = "104"/>
+			<column name="CURRENT_PRICE" value="121"/>
+			<column name="OPERATION" value="U"/>
+			<column name="LAST_UPDATED_TS" value="2022-04-15 02:19:04.956975+00"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>
