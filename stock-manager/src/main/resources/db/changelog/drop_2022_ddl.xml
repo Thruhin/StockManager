@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+	<changeSet id="DROP-2022-STOCKS"
+		author="STOCKS_SERVICE" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="STOCK" />
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE STOCK (
+			STOCK_ID NUMERIC ,
+			NAME VARCHAR(128),
+			DESCRIPTION VARCHAR( 1000 ),
+			COMPANY_URL VARCHAR (1000),
+			CURRENT_PRICE NUMERIC ,
+			CURRENCY_CODE VARCHAR(10) DEFAULT 'EUR',
+		    CREATED_TS TIMESTAMPTZ DEFAULT NOW(),
+			LAST_UPDATED_TS TIMESTAMPTZ DEFAULT NOW(),
+			CONSTRAINT ID PRIMARY KEY(STOCK_ID)
+			);
+		</sql>
+	</changeSet>
+	
+
+	<changeSet id="DROP-2022-STOCK_PRICE"
+		author="STOCKS_MANAGER" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="STOCK_PRICE_HISTORY" />
+			</not>
+		</preConditions>
+		<sql>
+			CREATE TABLE STOCK_PRICE_HISTORY (
+			HIST_ID NUMERIC,
+			STOCK_ID NUMERIC,
+            CURRENT_PRICE NUMERIC,
+            LAST_UPDATED_TS TIMESTAMPTZ DEFAULT NOW(),
+            CHANGE_IN_PRICE NUMERIC,
+            OPERATION VARCHAR(32),
+            CONSTRAINT HIST_ID PRIMARY KEY(HIST_ID)
+			);
+		</sql>
+	</changeSet>
+	
+	<changeSet id="DROP-2022-SEQUENCE"
+		 author="STOCKS_MANAGER" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<sequenceExists sequenceName="STOCK_SEQ" />
+			</not>
+		</preConditions>
+		<sql>
+			CREATE SEQUENCE STOCK_SEQ START 101 increment by 1 no cycle;
+		</sql>
+	</changeSet>
+	
+	<changeSet id="DROP-2022-HIST-SEQUENCE"
+		 author="STOCKS_MANAGER" runOnChange="true">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<sequenceExists sequenceName="STOCK_PRICE_HISTORY_SEQ" />
+			</not>
+		</preConditions>
+		<sql>
+			CREATE SEQUENCE STOCK_PRICE_HISTORY_SEQ START 101 increment by 1 no cycle;
+		</sql>
+	</changeSet>
+	
+</databaseChangeLog>
