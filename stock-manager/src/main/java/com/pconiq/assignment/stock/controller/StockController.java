@@ -69,12 +69,12 @@ public class StockController {
         @ApiResponse(responseCode = "400", description = "Bad request. Invalid request"),
         @ApiResponse(responseCode = "500", description = "Failed to get the stocks") })
     @GetMapping(value = "/stocks")
-    public Page<Stock> getPagedStocks(@RequestParam(value = "skip", required = false) Integer skip,
+    public ResponseEntity<Page<Stock>> getPagedStocks(@RequestParam(value = "skip", required = false) Integer skip,
         @RequestParam(value = "top", required = false) Integer top) {
         logger.info("Request for Stocks with pagination having values skip {} and top {}");
         Page<Stock> response = stockService.gePagedStocks(top, skip);
         logger.info("Completed request for Stocks with pagination having values skip {} and top {}");
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "Get Stock details for provided Stock Id")
@@ -139,7 +139,7 @@ public class StockController {
         StockDetailsResponse response = new StockDetailsResponse();
         ResponseEntity<StockDetailsResponse> responseEntity = null;
         try {
-            responseEntity = new ResponseEntity<>(stockService.createStock(stockRequest), HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(stockService.createStock(stockRequest), HttpStatus.CREATED);
         } catch (Exception exception) {
             logger.error("Failed to create Stocks with exception : {}", exception.getMessage());
             response.setStatusCode(Constants.STOCK_CREATE_FAILED);
@@ -185,7 +185,7 @@ public class StockController {
         try {
             repsonseEntity = new ResponseEntity<>(stockService.deleteStock(stockId), HttpStatus.OK);
         } catch (Exception exception) {
-            response.setStatusCode(Constants.STOCK_UPDATE_FAILED);
+            response.setStatusCode(Constants.STOCK_DELETE_FAILED);
             response.setStatusMessage("Failed to delete the Stock");
             repsonseEntity = new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }

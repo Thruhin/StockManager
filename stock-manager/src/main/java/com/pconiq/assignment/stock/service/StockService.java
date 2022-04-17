@@ -54,7 +54,7 @@ public interface StockService {
      * @param stockRequest
      * @return StockDetailsResponse Info about updated Stock
      */
-    public StockDetailsResponse updateStockPrice(StockPriceRequest stockPriceRequest);
+    public StockDetailsResponse updateStockPrice(StockPriceRequest stockPriceRequest) throws StockManagementException;
     
     /**
      * Deleted an existing Stock based on the Id

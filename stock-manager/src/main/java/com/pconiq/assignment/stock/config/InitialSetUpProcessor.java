@@ -17,6 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 
 import com.pconiq.assignment.stock.EnvVariables;
+import com.pconiq.assignment.stock.exception.StockManagementException;
 import com.pconiq.assignment.stock.model.restobjects.StockDetails;
 import com.pconiq.assignment.stock.model.restobjects.StockPriceRequest;
 import com.pconiq.assignment.stock.model.restobjects.StockRequest;
@@ -76,15 +77,17 @@ public class InitialSetUpProcessor {
      */
     private void updateSequenceWithLatestStockId() {
         Long stockId = (long) 0;
-        String sql = "ALTER SEQUENCE stock_seq RESTART WITH " + stockId + ";";
         try(Connection connection = liquibaseConfigService.createPostgresDataSource().getConnection();
-            Statement statement = connection.createStatement();PreparedStatement ps = connection.prepareStatement(sql);) {
+            Statement statement = connection.createStatement();) {
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery("select MAX(STOCK_ID) as NEXT_SEQ_ID from STOCK");
             if (rs.next()) {
                 stockId = rs.getLong("NEXT_SEQ_ID") + 1;
             }
+            String sql = "ALTER SEQUENCE stock_seq RESTART WITH " + stockId + ";";
+            PreparedStatement ps = connection.prepareStatement(sql);
             ps.executeUpdate();
+            ps.close();
             logger.info("Sequence is reset with latest value");
         } catch (SQLException e) {
             logger.error("Unable to reet the sequence with exception {}", e.getMessage());
@@ -94,9 +97,10 @@ public class InitialSetUpProcessor {
     /**
      * Reads from configurations if data should be inserted and persists the stocks
      * Also updates the Stock multiple times with random prices
+     * @throws StockManagementException 
      */
     @Transactional
-    private void initialStockDataInsert() {
+    private void initialStockDataInsert() throws StockManagementException {
         logger.info("Starting creation and updation of {} records of stock data", envVariables.getStockSize());
         for (int seq = 1; seq <= envVariables.getStockSize(); seq++) {
             StockDetails stockDetails = createStock(seq);
