@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-@Profile(value = { "test" })
 @Configuration
 @ComponentScan(basePackages = {"com.pconiq.assignment.stock"})
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })

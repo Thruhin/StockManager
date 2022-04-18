@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -46,10 +47,10 @@ public class InitialSetUpProcessor {
     
     @Autowired
     private EnvVariables envVariables;
-
-    @Autowired
-    private LiquibaseConfigService liquibaseConfigService;
     
+    @Autowired
+    private DataSource dataSource;
+
     /**
      * This method takes care of executing DB Scripts on the Schema and inserting default Stock records
      * @param event Spring context event
@@ -77,7 +78,7 @@ public class InitialSetUpProcessor {
      */
     private void updateSequenceWithLatestStockId() {
         Long stockId = (long) 0;
-        try(Connection connection = liquibaseConfigService.createPostgresDataSource().getConnection();
+        try(Connection connection = dataSource.getConnection();
             Statement statement = connection.createStatement();) {
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery("select MAX(STOCK_ID) as NEXT_SEQ_ID from STOCK");
@@ -145,7 +146,7 @@ public class InitialSetUpProcessor {
         logger.info("Executing Liquibase scripts");
 
         // Connection dbConnection = liquibaseConfigService.getGlobalPostgresDataSource().getConnection();
-        Connection dbConnection = liquibaseConfigService.createPostgresDataSource().getConnection();
+        Connection dbConnection = dataSource.getConnection();
 
         if (dbConnection == null) {
             logger.error("Could not get valid DB connection while executing Liquibase scripts");

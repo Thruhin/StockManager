@@ -1,5 +1,7 @@
 package com.pconiq.assignment.stock.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class HibernateConfig {
     
     @Autowired
-    private LiquibaseConfigService liquibaseConfigService;
+    private DataSource dataSource;
     
     @Bean
     public JpaVendorAdapter globalJPAVendorAdapter() {
@@ -35,7 +37,7 @@ public class HibernateConfig {
       LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
       em.setJpaVendorAdapter(globalJPAVendorAdapter());
       em.setPackagesToScan("com.pconiq.assignment.stock.repo.entity");
-      em.setDataSource(liquibaseConfigService.createPostgresDataSource());
+      em.setDataSource(dataSource);
       return em;
     }
 
@@ -44,7 +46,7 @@ public class HibernateConfig {
         {
       JpaTransactionManager transactionManager = new JpaTransactionManager();
       transactionManager.setEntityManagerFactory(globalPostgresEntityManagerFactory().getObject());
-      transactionManager.setDataSource(liquibaseConfigService.createPostgresDataSource());
+      transactionManager.setDataSource(dataSource);
       return transactionManager;
     }
 
