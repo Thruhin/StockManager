@@ -42,42 +42,42 @@
 		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
 		    <column name="STOCK_ID"  value = "104"/>
 			<column name="CURRENT_PRICE" value="123"></column>
-			<column name="OPERATION" value="C"></column>
+			<column name="OPERATION" value="0"></column>
 			<column name="LAST_UPDATED_TS" value="2022-04-10 02:19:04.956975+00"/>
 		</insert>
 		<insert tableName="stock_price_history">
 		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
 		    <column name="STOCK_ID"  value = "104"/>
 			<column name="CURRENT_PRICE" value="124"></column>
-			<column name="OPERATION" value="U"></column>
+			<column name="OPERATION" value="1"></column>
 			<column name="LAST_UPDATED_TS" value="2022-04-11 02:19:04.956975+00"/>
 		</insert>
 		<insert tableName="stock_price_history">
 		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
 		    <column name="STOCK_ID"  value = "104"/>
 			<column name="CURRENT_PRICE" value="125"></column>
-			<column name="OPERATION" value="U"></column>
+			<column name="OPERATION" value="1"></column>
 			<column name="LAST_UPDATED_TS" value="2022-04-12 02:19:04.956975+00"/>
 		</insert>
 		<insert tableName="stock_price_history">
 		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
 		    <column name="STOCK_ID"  value = "104"/>
 			<column name="CURRENT_PRICE" value="128"></column>
-			<column name="OPERATION" value="C"></column>
+			<column name="OPERATION" value="0"></column>
 			<column name="LAST_UPDATED_TS" value="2022-04-13 02:19:04.956975+00"/>
 		</insert>
 		<insert tableName="stock_price_history">
 		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
 		    <column name="STOCK_ID"  value = "104"/>
 			<column name="CURRENT_PRICE" value="129"></column>
-			<column name="OPERATION" value="U"></column>
+			<column name="OPERATION" value="1"></column>
 			<column name="LAST_UPDATED_TS" value="2022-04-14 02:19:04.956975+00"/>
 		</insert>
 		<insert tableName="stock_price_history">
 		    <column name="HIST_ID"  valueSequenceNext="STOCK_PRICE_HISTORY_SEQ" />
 		    <column name="STOCK_ID"  value = "104"/>
 			<column name="CURRENT_PRICE" value="121"/>
-			<column name="OPERATION" value="U"/>
+			<column name="OPERATION" value="1"/>
 			<column name="LAST_UPDATED_TS" value="2022-04-15 02:19:04.956975+00"/>
 		</insert>
 	</changeSet>
