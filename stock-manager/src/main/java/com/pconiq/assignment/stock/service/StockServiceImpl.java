@@ -101,7 +101,7 @@ public class StockServiceImpl implements StockService {
         stock.setLastUpdated(
             stockRequest.getLastUpdated() == null ? StocksUtil.getCurrentTimestamp() : stockRequest.getLastUpdated());
         stock = stockRepository.saveAndFlush(stock);
-        saveHistory(stock, Operation.Create);
+        saveHistory(stock, Operation.Create, 0);
         StockDetailsResponse response = new StockDetailsResponse();
         response.setStatusCode(Constants.STOCK_CREATE_SUCCESS);
         response.setStatusMessage("Stock created successfully");
@@ -122,12 +122,13 @@ public class StockServiceImpl implements StockService {
         Timestamp tz = stockPriceRequest.getLastUpdated() == null ? StocksUtil.getCurrentTimestamp()
             : stockPriceRequest.getLastUpdated();
         stock.setLastUpdated(tz);
+        float oldPrice = stock.getCurrentPrice();
         stock.setCurrentPrice(stockPriceRequest.getCurrentPrice()
             * currencyService.getConversionRateToBaseCurrency(stockPriceRequest.getCurrencyCode()));
         stock.setCurrencyCode(stockPriceRequest.getCurrencyCode());
         stockRepository.updateStockPrice(stockPriceRequest.getStockId(), stockPriceRequest.getCurrentPrice(),
             stockPriceRequest.getCurrencyCode(), tz);
-        saveHistory(stock, Operation.Update);
+        saveHistory(stock, Operation.Update, oldPrice);
         StockDetailsResponse response = new StockDetailsResponse();
         response.setStatusCode(Constants.STOCK_UPDATE_SUCCESS);
         response.setStatusMessage("Stock updated successfully");
@@ -143,7 +144,7 @@ public class StockServiceImpl implements StockService {
         }
         Stock stock = stockOptional.get();
         stockRepository.delete(stock);
-        saveHistory(stock, Operation.Delete);
+        saveHistory(stock, Operation.Delete, stock.getCurrentPrice());
         BaseResponse response = new BaseResponse();
         response.setStatusCode(Constants.STOCK_DELETE_SUCCESS);
         response.setStatusMessage("Deleted the stock succesfully");
@@ -151,11 +152,12 @@ public class StockServiceImpl implements StockService {
         return response;
     }
 
-    private void saveHistory(Stock stock, Operation operation) {
+    private void saveHistory(Stock stock, Operation operation, float oldPrice) {
         StockPrice stockPrice = new StockPrice();
         stockPrice.setCurrentPrice(stock.getCurrentPrice());
         stockPrice.setOperation(operation);
         stockPrice.setStockId(stock.getStockId());
+        stockPrice.setChangeInPrice( stock.getCurrentPrice() - oldPrice);
         stockPrice.setLastUpdated(StocksUtil.getCurrentTimestamp());
         stockPriceRepository.saveAndFlush(stockPrice);
     }

@@ -45,7 +45,7 @@ public class StockPrice implements Serializable{
     private Timestamp lastUpdated;
     
     @Column(name = "CHANGE_IN_PRICE")
-    private Long changeInPrice;
+    private float changeInPrice;
     
     @Column(name = "OPERATION")
     private Operation operation;
