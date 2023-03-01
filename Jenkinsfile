@@ -6,7 +6,7 @@ pipeline {
     stage("build") {
       steps {
         echo 'building the application...'
-        dir("/var/jenkins_home/jobs/StockManager-Pipeline/dev"){
+        dir("/var/jenkins_home/workspace/StockManager-Pipeline_dev"){
           sh 'mvn -B -DskipTests clean package'
         }
         echo 'done with build'
